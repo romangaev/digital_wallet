@@ -66,7 +66,7 @@
 '''
 import cmd
 import sys
-from digital_wallet import *
+from digital_wallet_methods import *
 import logging
 
 logging.basicConfig(filename="sample.log", level=logging.INFO, format='%(asctime)s:%(levelname)s:%(message)s')
