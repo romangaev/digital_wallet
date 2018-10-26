@@ -19,7 +19,7 @@
 '''
 import cmd
 import sys
-from digital_wallet_methods import *
+from bank import *
 import logging
 
 logging.basicConfig(filename="sample.log", level=logging.INFO, format='%(asctime)s:%(levelname)s:%(message)s')
@@ -28,7 +28,7 @@ class Cli(cmd.Cmd):
 
 
     def __init__(self):
-        '''Инициализация командной строки'''
+        #Инициализация командной строки
         cmd.Cmd.__init__(self)
         self.prompt = "> "
         self.intro = "Добро пожаловать в Электронный Кошелёк!\nДля справки наберите 'help'"

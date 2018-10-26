@@ -20,7 +20,7 @@ db = client.digital_wallet
 
 
 def account_routine(username):
-    '''Метод запуска интерфейса личного кабинета аккаунта'''
+    # Метод запуска интерфейса личного кабинета аккаунта
     while True:
         try:
             logging.info("Starting account routine...")
@@ -59,7 +59,7 @@ def account_routine(username):
 
 
 def password_check(username, password):
-    '''Авторизация и проверка пароля пользователя'''
+    # Авторизация и проверка пароля пользователя
     logging.error("Checking password...")
     query = db.user_accounts.find_one({'username': username})
     if query is None:
@@ -72,7 +72,7 @@ def password_check(username, password):
 
 
 def username_check(username):
-    '''Проверка занятости логина в базе данных'''
+    # Проверка занятости логина в базе данных
     logging.info("Checking name availability")
     if db.user_accounts.find_one({'username': username}) is None:
         return True
@@ -80,13 +80,13 @@ def username_check(username):
 
 
 def create_user(username, password):
-    '''Создание нового пользователя в БД'''
+    # Создание нового пользователя в БД
     db.user_accounts.insert_one({'username': username, 'password': password, 'balance': INIT_BALANCE})
     logging.info("User has been created.")
 
 
 def transfer_money(sender,receiver,amount,password):
-    '''Перевод средств по логину получателя'''
+    # Перевод средств по логину получателя
     try:
         logging.info("Starting money transfer process.")
         receiver_query = db.user_accounts.find_one({'username': receiver})
@@ -134,7 +134,7 @@ def transfer_money(sender,receiver,amount,password):
 
 
 def get_balance(username, password):
-    '''Запрос баланса'''
+    # Запрос баланса
     try:
         if not password_check(username, password):
             raise PermissionError
@@ -146,7 +146,7 @@ def get_balance(username, password):
 
 
 def top_up(username, amount):
-    '''Пополнение счета'''
+    # Пополнение счета
     try:
         user_query = db.user_accounts.find_one({'username': username})
         # Выброс исключения при отсутствии средств для перевода
@@ -161,7 +161,7 @@ def top_up(username, amount):
 
 
 def withdraw(username, amount):
-    '''Снятие средств'''
+    # Снятие средств
     try:
         user_query = db.user_accounts.find_one({'username': username})
         # Выброс исключения при отсутствии средств для перевода
