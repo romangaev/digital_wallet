@@ -19,17 +19,19 @@
 '''
 import cmd
 import sys
-from bank import *
+
+from Bank import Bank
+
 import logging
 
 logging.basicConfig(filename="sample.log", level=logging.INFO, format='%(asctime)s:%(levelname)s:%(message)s')
 
 class Cli(cmd.Cmd):
 
-
-    def __init__(self):
+    def __init__(self, bank):
         #Инициализация командной строки
         cmd.Cmd.__init__(self)
+        self.bank = bank
         self.prompt = "> "
         self.intro = "Добро пожаловать в Электронный Кошелёк!\nДля справки наберите 'help'"
         self.doc_header = "Доступные команды (для справки по конкретной команде наберите 'help _команда_')"
@@ -43,9 +45,9 @@ class Cli(cmd.Cmd):
             password = input("Введите пароль:")
 
             # авторизация пользователя и запуск интерфейса аккаунта при успешной авторизации
-            if password_check(username, password):
+            if bank.password_check(username, password):
                 print("Успешный вход")
-                account_routine(username)
+                bank.account_routine(username)
                 logging.info("Successfully logged in")
             else:
                 print("Неверный логин/пароль!")
@@ -59,10 +61,10 @@ class Cli(cmd.Cmd):
         try:
             logging.info("Opened sign up dialog")
             username = input("Создайте логин:")
-            if not username_check(username):
+            if not bank.username_check(username):
                 raise ValueError
             password = input("Создайте пароль:")
-            create_user(username, password)
+            bank.create_user(username, password)
             print("Вы были успешно зарегистрированы в системе!")
             logging.info("Successfully signed up")
         except ValueError:
@@ -71,13 +73,14 @@ class Cli(cmd.Cmd):
 
     def do_exit(self, line):
         """exit - выход из программы"""
-        print("До скорой встречи, до скорой встречи, моя любовь к тебе навечно...")
+        print("До скорой встречи")
         logging.info("Application terminated")
         sys.exit()
 
 
 if __name__ == "__main__":
-    cli = Cli()
+    bank = Bank()
+    cli = Cli(bank)
     try:
         cli.cmdloop()
     except KeyboardInterrupt:
